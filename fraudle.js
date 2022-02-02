@@ -128,8 +128,9 @@ function myRandom(seed) {
   return x - Math.floor(x);
 }
 
-function inputEvent(el, e) {
-  if (e.key === "Backspace" || e.key === "Delete") {
+
+function inputEvent(el, event) {
+  if (event.key === "Backspace" || event.key === "Delete") {
     el.value = '';
     if (el.previousElementSibling) {
       el.previousElementSibling.focus();
@@ -150,6 +151,7 @@ function init() {
     rowDiv.setAttribute("id", "guess" + (i + 1));
     gameDiv.appendChild(rowDiv);
 
+    // Text Inputs
     for (let j = 0; j < todaysWord.length; j++) {
       let letterInput = document.createElement("input");
       letterInput.setAttribute("maxlength", "1");
@@ -160,7 +162,7 @@ function init() {
       rowDiv.appendChild(letterInput);
     }
 
-    //draw button
+    //Button
     let submitButton = document.createElement("button");
     submitButton.textContent = '⏎';
     submitButton.addEventListener("click", function() {
@@ -182,7 +184,7 @@ function getWordList() {
 
     // Pick todays word
     let random = Math.floor(myRandom(dateSeed()) * arrWordList.length);
-    todaysWord = "BEETLE";
+    todaysWord = arrWordList[random];
     
     // Let the game begin
     init();
