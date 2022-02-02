@@ -91,7 +91,20 @@ function submitGuess() {
 
 
 function prepareRow(row) {
-  lockBoard();
+  // disable previous row
+  if (row > 1) {
+    const inputs = document.getElementById("guess" + (row - 1)).getElementsByTagName("input");
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].setAttribute("disabled", true);
+    }
+
+    const buttons = document.getElementById("guess" + (row - 1)).getElementsByTagName("button");
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute("disabled", true);
+    }
+  }
+
+  // enable next row
   const inputs = document.getElementById("guess"+row).getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].removeAttribute("disabled");
@@ -115,20 +128,6 @@ function myRandom(seed) {
   var x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
 }
-
-
-function lockBoard() {
-  const inputs = document.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].setAttribute("disabled", true);
-  }
-
-  const buttons = document.getElementsByTagName("button");
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].setAttribute("disabled", true);
-  }
-}
-
 
 function init() {
   // set inputs to inactive and add event handler
