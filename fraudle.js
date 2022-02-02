@@ -2,7 +2,7 @@
 var arrWordList = [];
 var todaysWord = '';
 var currGuess = 1;
-var totalGuesses = 6
+var totalGuesses = 6;
 var victory = false;
 
 
@@ -36,14 +36,15 @@ function shakeRow() {
 
 
 function calculateScore(guessWord) {
-  let score = ["⬛️", "⬛️", "⬛️", "⬛️", "⬛️"];
+  let score = Array(todaysWord.length);
+  score.fill("⬛️");
   let charsChecked = [];
   if (guessWord === todaysWord) {
-    score = ["🟩", "🟩", "🟩", "🟩", "🟩"];
+    score.fill("🟩");
     victory = true;
   } else {
     // check for Greens
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < todaysWord.length; i++) {
       if (guessWord[i] === todaysWord[i]) {
         score[i] = "🟩";
         charsChecked[i] = true;
@@ -51,8 +52,8 @@ function calculateScore(guessWord) {
     }
     
     // then for Yellows
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
+    for (let i = 0; i < todaysWord.length; i++) {
+      for (let j = 0; j < todaysWord.length; j++) {
         if (i != j && score[i] === "⬛️" && !charsChecked[j] && guessWord[i] === todaysWord[j]) {
           score[i] = "🟨";
           charsChecked[j] = true;
