@@ -70,7 +70,6 @@ function submitGuess() {
   let guessWord = parseGuessWord(arrInputs);
 
   if (validWord(guessWord)) {
-    console.log(currGuess);
     currGuess++;
     let result = calculateScore(guessWord);
     for (let i = 0; i < arrInputs.length; i++) {
@@ -129,31 +128,47 @@ function myRandom(seed) {
   return x - Math.floor(x);
 }
 
-function init() {
-  // set inputs to inactive and add event handler
-  const inputs = document.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].setAttribute("disabled", true);
-    inputs[i].addEventListener("keyup", function(event) {
-      if (event.key === "Backspace" || event.key === "Delete") {
-        this.value = '';
-        if (this.previousElementSibling) {
-          this.previousElementSibling.focus();
-        }
-      } else if (this.value.length > 0) {
-        this.value = this.value.toUpperCase();
-        this.nextElementSibling.focus();
-      }
-    });
+function inputEvent(el, e) {
+  if (e.key === "Backspace" || e.key === "Delete") {
+    el.value = '';
+    if (el.previousElementSibling) {
+      el.previousElementSibling.focus();
+    }
+  } else if (el.value.length > 0) {
+    el.value = el.value.toUpperCase();
+    el.nextElementSibling.focus();
   }
+}
 
-  //set buttons to inactive and add event handler
-  const buttons = document.getElementsByTagName("button");
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].setAttribute("disabled", true);
-    buttons[i].addEventListener("click", function() {
+
+function init() {
+
+  // draw board
+  const gameDiv = document.getElementById("game");
+  for (let i = 0; i < totalGuesses; i++) {
+    let rowDiv = document.createElement("div");
+    rowDiv.setAttribute("id", "guess" + (i + 1));
+    gameDiv.appendChild(rowDiv);
+
+    for (let j = 0; j < todaysWord.length; j++) {
+      let letterInput = document.createElement("input");
+      letterInput.setAttribute("maxlength", "1");
+      letterInput.setAttribute("disabled", true);
+      letterInput.addEventListener("keyup", function(event) {
+        inputEvent(this, event);
+      });
+      rowDiv.appendChild(letterInput);
+    }
+
+    //draw button
+    let submitButton = document.createElement("button");
+    submitButton.textContent = '⏎';
+    submitButton.addEventListener("click", function() {
       submitGuess();
     })
+
+    rowDiv.appendChild(submitButton);
+    
   }
 }
 
@@ -167,7 +182,7 @@ function getWordList() {
 
     // Pick todays word
     let random = Math.floor(myRandom(dateSeed()) * arrWordList.length);
-    todaysWord = arrWordList[random];
+    todaysWord = "BEETLE";
     
     // Let the game begin
     init();
